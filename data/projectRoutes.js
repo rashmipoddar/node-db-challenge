@@ -67,7 +67,14 @@ route.get('/:id/tasks', (req, res) => {
   tasksDb.getByProjectId(req.params.id)
     .then(tasks => {
       console.log(tasks);
-      res.status(200).send(tasks);
+      const modifiedTasks = tasks.map(task => {
+        if (task.completed === 0 ) {
+          return { ...task, completed: false};
+        } else {
+          return { ...task, completed: true};
+        }
+      })
+      res.status(200).send(modifiedTasks);
     })
     .catch(error => {
       console.log(error);
